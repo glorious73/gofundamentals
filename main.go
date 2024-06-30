@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"sync"
+	"time"
 )
 
 const totalTickets = 50
@@ -17,6 +19,8 @@ type UserData struct {
 	numberOfTickets uint
 }
 
+var waitGroup = sync.WaitGroup{}
+
 func main() {
 
 	greetUser()
@@ -26,20 +30,12 @@ func main() {
 		firstName, lastName, email, userTickets := getUserInput()
 		isValidName, isValidEmail, isValidTickets := ValidateInput(firstName, lastName, email, userTickets, remainingTickets)
 
-		var userData = UserData{
-			firstName:       firstName,
-			lastName:        lastName,
-			email:           email,
-			numberOfTickets: userTickets,
-		}
-
 		if isValidName && isValidEmail && isValidTickets {
-			remainingTickets = remainingTickets - userTickets
-			fmt.Printf("%v booked %v tickets.\n", firstName, userTickets)
-			fmt.Printf("Remaining tickets for conference are %v\n", remainingTickets)
 
-			bookings = append(bookings, userData)
-			fmt.Printf("Bookings are now:\n%v\n", bookings)
+			bookTicket(userTickets, firstName, lastName, email)
+
+			waitGroup.Add(1)
+			go sendTicket(userTickets, firstName, lastName, email)
 
 			var firstNames []string = getFirstNames()
 			fmt.Printf("First names are %v\n", firstNames)
@@ -49,6 +45,7 @@ func main() {
 		}
 	}
 	fmt.Println("Tickets are now sold out. Please comeback next year.")
+	waitGroup.Wait()
 }
 
 func greetUser() {
@@ -81,4 +78,29 @@ func getUserInput() (string, string, string, uint) {
 	fmt.Scan(&userTickets)
 
 	return firstName, lastName, email, userTickets
+}
+
+func bookTicket(userTickets uint, firstName string, lastName string, email string) {
+	var userData = UserData{
+		firstName:       firstName,
+		lastName:        lastName,
+		email:           email,
+		numberOfTickets: userTickets,
+	}
+
+	remainingTickets = remainingTickets - userTickets
+	fmt.Printf("%v (%v) booked %v tickets.\n", firstName, email, userTickets)
+	fmt.Printf("%v tickets remaining for %v\n", remainingTickets, conferenceName)
+
+	bookings = append(bookings, userData)
+	fmt.Printf("Bookings are now:\n%v\n", bookings)
+}
+
+func sendTicket(userTickets uint, firstName string, lastName string, email string) {
+	time.Sleep(10 * time.Second)
+	var ticket = fmt.Sprintf("%v tickets for %v %v", userTickets, firstName, lastName)
+	fmt.Println("#################")
+	fmt.Printf("Sending ticket:\n %v \nto email address %v\n", ticket, email)
+	fmt.Println("#################")
+	waitGroup.Done()
 }
