@@ -26,8 +26,5 @@ func main() {
 	fmt.Printf("Remaining tickets for conference are %v\n", remainingTickets)
 
 	bookings = append(bookings, firstName)
-	fmt.Printf("The whole slice: %v\n", bookings)
-	fmt.Printf("The first value: %v\n", bookings[0])
-	fmt.Printf("Slice type: %T\n", bookings[0])
-	fmt.Printf("Slice length: %v\n", len(bookings))
+	fmt.Printf("All bookings: %v\n", bookings)
 }
