@@ -10,11 +10,9 @@ func main() {
 	const totalTickets = 50
 	var remainingTickets uint = 50
 
-	var bookings []string
+	greetUser(conferenceName, totalTickets, remainingTickets)
 
-	fmt.Println("Welcome to", conferenceName, "booking application!")
-	fmt.Println("We have a total of", totalTickets, "and we have", remainingTickets, "remaining.")
-	fmt.Println("Get your tickets here to attend")
+	var bookings []string
 
 	for remainingTickets > 0 {
 		var firstName string
@@ -49,4 +47,10 @@ func main() {
 		}
 	}
 	fmt.Println("Tickets are now sold out. Please comeback next year.")
+}
+
+func greetUser(conferenceName string, totalTickets uint, remainingTickets uint) {
+	fmt.Println("Welcome to", conferenceName, "booking application!")
+	fmt.Println("We have a total of", totalTickets, "and we have", remainingTickets, "remaining.")
+	fmt.Println("Get your tickets here to attend")
 }
