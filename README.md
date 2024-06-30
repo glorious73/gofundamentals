@@ -1,0 +1,2 @@
+## Go Crash Course
+This is the implementation of the Go creash course found [in this video by Tech World with Nana](https://www.youtube.com/watch?v=yyUHQIec83I). It teaches the fundamental concepts of the Go programming language.
