@@ -31,15 +31,11 @@ func main() {
 
 		if isValidName && isValidTickets {
 			remainingTickets = remainingTickets - userTickets
+			fmt.Printf("%v booked %v tickets.\n", firstName, userTickets)
 			fmt.Printf("Remaining tickets for conference are %v\n", remainingTickets)
 
 			bookings = append(bookings, firstName+" "+lastName)
-			var firstNames []string
-			for _, booking := range bookings {
-				var names = strings.Fields(booking)
-				firstNames = append(firstNames, names[0])
-			}
-			fmt.Printf("%v booked %v tickets.\n", firstName, userTickets)
+			var firstNames []string = getFirstNames(bookings)
 			fmt.Printf("First names are %v\n", firstNames)
 		} else {
 			fmt.Printf("First name and last name each contain at least 2 characters and the remaining # of tickets is %v\n", remainingTickets)
@@ -53,4 +49,13 @@ func greetUser(conferenceName string, totalTickets uint, remainingTickets uint) 
 	fmt.Println("Welcome to", conferenceName, "booking application!")
 	fmt.Println("We have a total of", totalTickets, "and we have", remainingTickets, "remaining.")
 	fmt.Println("Get your tickets here to attend")
+}
+
+func getFirstNames(bookings []string) []string {
+	var firstNames []string
+	for _, booking := range bookings {
+		var names = strings.Fields(booking)
+		firstNames = append(firstNames, names[0])
+	}
+	return firstNames
 }
