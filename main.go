@@ -16,7 +16,7 @@ func main() {
 	fmt.Println("We have a total of", totalTickets, "and we have", remainingTickets, "remaining.")
 	fmt.Println("Get your tickets here to attend")
 
-	for {
+	for remainingTickets > 0 {
 		var firstName string
 		var lastName string
 		var userTickets uint
@@ -40,14 +40,10 @@ func main() {
 				firstNames = append(firstNames, names[0])
 			}
 			fmt.Printf("First names are %v\n", firstNames)
-
-			if remainingTickets == 0 {
-				fmt.Println("Tickets are now sold out. Please comeback next year.")
-				break
-			}
 		} else {
 			fmt.Printf("We only have %v tickets remaining, so you can't book %v tickets.\n", remainingTickets, userTickets)
 			continue
 		}
 	}
+	fmt.Println("Tickets are now sold out. Please comeback next year.")
 }
