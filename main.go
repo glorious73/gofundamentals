@@ -7,7 +7,7 @@ func main() {
 	const totalTickets = 50
 	var remainingTickets uint = 50
 
-	var bookings [50]string
+	var bookings []string
 
 	fmt.Println("Welcome to", conferenceName, "booking application!")
 	fmt.Println("We have a total of", totalTickets, "and we have", remainingTickets, "remaining.")
@@ -25,9 +25,9 @@ func main() {
 	remainingTickets = remainingTickets - userTickets
 	fmt.Printf("Remaining tickets for conference are %v\n", remainingTickets)
 
-	bookings[0] = firstName
-	fmt.Printf("The whole array: %v\n", bookings)
+	bookings = append(bookings, firstName)
+	fmt.Printf("The whole slice: %v\n", bookings)
 	fmt.Printf("The first value: %v\n", bookings[0])
-	fmt.Printf("Array type: %T\n", bookings[0])
-	fmt.Printf("Array length: %v\n", len(bookings))
+	fmt.Printf("Slice type: %T\n", bookings[0])
+	fmt.Printf("Slice length: %v\n", len(bookings))
 }
