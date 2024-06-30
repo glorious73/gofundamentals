@@ -2,32 +2,39 @@ package main
 
 import (
 	"fmt"
-	"strings"
+	"strconv"
 )
 
 const totalTickets = 50
 
 var conferenceName = "Go Conference"
 var remainingTickets uint = 50
+var bookings = make([]map[string]string, 1)
 
 func main() {
 
 	greetUser()
 
-	var bookings []string
-
 	for remainingTickets > 0 {
 
-		firstName, lastName, userTickets := getUserInput()
-		isValidName, isValidTickets := ValidateInput(firstName, lastName, userTickets, remainingTickets)
+		firstName, lastName, email, userTickets := getUserInput()
+		isValidName, isValidEmail, isValidTickets := ValidateInput(firstName, lastName, email, userTickets, remainingTickets)
 
-		if isValidName && isValidTickets {
+		var userData = make(map[string]string)
+		userData["firstName"] = firstName
+		userData["lastName"] = lastName
+		userData["email"] = email
+		userData["tickets"] = strconv.FormatUint(uint64(userTickets), 10)
+
+		if isValidName && isValidEmail && isValidTickets {
 			remainingTickets = remainingTickets - userTickets
 			fmt.Printf("%v booked %v tickets.\n", firstName, userTickets)
 			fmt.Printf("Remaining tickets for conference are %v\n", remainingTickets)
 
-			bookings = append(bookings, firstName+" "+lastName)
-			var firstNames []string = getFirstNames(bookings)
+			bookings = append(bookings, userData)
+			fmt.Printf("Bookings are now:\n%v\n", bookings)
+
+			var firstNames []string = getFirstNames()
 			fmt.Printf("First names are %v\n", firstNames)
 		} else {
 			fmt.Printf("First name and last name each contain at least 2 characters and the remaining # of tickets is %v\n", remainingTickets)
@@ -43,26 +50,28 @@ func greetUser() {
 	fmt.Println("Get your tickets here to attend")
 }
 
-func getFirstNames(bookings []string) []string {
+func getFirstNames() []string {
 	var firstNames []string
 	for _, booking := range bookings {
-		var names = strings.Fields(booking)
-		firstNames = append(firstNames, names[0])
+		firstNames = append(firstNames, booking["firstName"])
 	}
 	return firstNames
 }
 
-func getUserInput() (string, string, uint) {
+func getUserInput() (string, string, string, uint) {
 	var firstName string
 	var lastName string
+	var email string
 	var userTickets uint
 
 	fmt.Println("Please enter your first name")
 	fmt.Scan(&firstName)
 	fmt.Println("Please enter your last name")
 	fmt.Scan(&lastName)
+	fmt.Println("Please enter your email address")
+	fmt.Scan(&email)
 	fmt.Println("Please enter number of tickets to be booked")
 	fmt.Scan(&userTickets)
 
-	return firstName, lastName, userTickets
+	return firstName, lastName, email, userTickets
 }
